@@ -8,7 +8,8 @@ categories:
 
 **观察下面这个例子会出现什么结果**  
 
-```
+{% highlight objc linenos %}
+
 -(void)loadView
 {
 	NSLog(@"who am i");
@@ -19,7 +20,10 @@ categories:
     self.view.backgroundColor = [UIColor redColor];
 }
 
-```
+{% endhighlight %}
+
+
+
 <!--more-->
 分析：发现loadView和viewDidload会一直循环调用，原因何在   
 
