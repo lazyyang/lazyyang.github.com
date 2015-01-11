@@ -7,8 +7,265 @@
     <title>iCode</title>
     <link href="/feed/" rel="self" />
     <link href="http://webfrogs.github.com" />
-    <lastBuildDate>2015-01-11T22:49:07+08:00</lastBuildDate>
+    <lastBuildDate>2015-01-11T23:26:21+08:00</lastBuildDate>
     <webMaster>ccf.developer@gmail.com</webMaster>
+    
+    <item>
+      <title>Tow</title>
+      <link href="/2015/01/11/tow/"/>
+      <pubDate>2015-01-11T00:00:00+08:00</pubDate>
+      <author>iCode</author>
+      <guid>/2015/01/11/tow</guid>
+      <content:encoded><![CDATA[
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>序列化与反序列化</title>
+      <link href="/2014/06/26/xu-lie-hua-yu-fan-xu-lie-hua/"/>
+      <pubDate>2014-06-26T15:59:06+08:00</pubDate>
+      <author>iCode</author>
+      <guid>/2014/06/26/xu-lie-hua-yu-fan-xu-lie-hua</guid>
+      <content:encoded><![CDATA[<p>归档即序列化与反序列化</p>
+
+<p>NSCoding是一个协议，主要是下面两个方法</p>
+
+<ul>
+<li><p>-(id)initWithCoder:(NSCoder *)coder;//从coder中读取数据，保存到相应的变量中，即反序列化数据</p></li>
+<li><p>-(void)encoderWithCoder:(NSCoder *)coder;//读取实例变量，并把这些数据写到coder中去。</p></li>
+</ul>
+
+
+<p><strong>NSCoder是一个抽象类，抽象类不能被实例化，只能提供一些想让子类继承的方法</strong> <br/>
+<strong>NSKeyedUnarchiver 从二进制流读取对象</strong> <br/>
+<strong>NSKeyedArchiver   把对象写到二进制流中去</strong></p>
+
+<p>如下，在ZYRestaurant定义了如下这些属性</p>
+
+<pre><code>
+@interface ZYRestaurant : NSObject&lt;NSCoding&gt;
+
+@property (nonatomic,copy) NSString *shopID;
+@property (nonatomic,copy) NSString *title;
+@property (nonatomic,copy) NSString *discount;
+@property (nonatomic,copy) NSString *address;
+
+@end
+</code></pre>
+
+<p>在ZYRestaurant.m里面实现如下这些方法</p>
+
+<pre><code>- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super init]) {
+        _shopID = [aDecoder decodeObjectForKey:@"shopid"];
+        _title = [aDecoder decodeObjectForKey:@"title"];
+        _discount = [aDecoder decodeObjectForKey:@"discount"];
+        _address = [aDecoder decodeObjectForKey:@"address"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:self.shopID forKey:@"shopid"];
+    [aCoder encodeObject:self.title forKey:@"title"];
+    [aCoder encodeObject:self.discount forKey:@"discount"];
+    [aCoder encodeObject:self.address forKey:@"address"];
+}
+</code></pre>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>loadView与viewDidLoad的区别</title>
+      <link href="/2014/06/26/loadviewyu-viewdidloadde-qu-bie/"/>
+      <pubDate>2014-06-26T09:30:33+08:00</pubDate>
+      <author>iCode</author>
+      <guid>/2014/06/26/loadviewyu-viewdidloadde-qu-bie</guid>
+      <content:encoded><![CDATA[<p><strong>观察下面这个例子会出现什么结果</strong></p>
+
+<div class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="lineno">1</span> <span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">loadView</span>
+<span class="lineno">2</span> <span class="p">{</span>
+<span class="lineno">3</span>   <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;who am i&quot;</span><span class="p">);</span>
+<span class="lineno">4</span> <span class="p">}</span>
+<span class="lineno">5</span> 
+<span class="lineno">6</span> <span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewDidLoad</span>
+<span class="lineno">7</span> <span class="p">{</span>
+<span class="lineno">8</span>     <span class="nb">self</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIColor</span> <span class="n">redColor</span><span class="p">];</span>
+<span class="lineno">9</span> <span class="p">}</span></code></pre></div>
+
+
+
+
+<!--more-->
+
+
+<p>分析：发现loadView和viewDidload会一直循环调用，原因何在</p>
+
+<p>我们发现只要self.view为nil，它就会调用一次loadview</p>
+
+<p>于是我们猜想_view的getter方法里是这样写的</p>
+
+<pre><code>if(_view == nil)
+{
+...
+   [self loadView];
+   [self viewDidLoad];
+...
+}
+</code></pre>
+
+<p>下面是一涨生命周期的图：</p>
+
+<p><img src="https://raw.githubusercontent.com/lazyyang/lazyyang.github.com/source/source/images/img/lifeCircle.jpg" alt="" /></p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>腾讯iOS面试题</title>
+      <link href="/2014/06/25/teng-xun-iosmian-shi-ti/"/>
+      <pubDate>2014-06-25T09:26:26+08:00</pubDate>
+      <author>iCode</author>
+      <guid>/2014/06/25/teng-xun-iosmian-shi-ti</guid>
+      <content:encoded><![CDATA[<h1>腾讯</h1>
+
+<hr />
+
+<p>昨天去面腾讯地图的iOS，下面是我总结的一些问题。</p>
+
+<ol>
+<li><p>假如沙盒路径下有一个文件，文件里面有1000万个学生成绩，怎么对这个学生的成绩进行排序让其效率更高(假设内存足够大，可以一次性载入1000万个学生)</p></li>
+<li><p>从1000万个数里以最快的效率选出其中最大的100个(假设内存足够大，可以一次性载入1000万个成绩)</p></li>
+</ol>
+
+
+<!--more-->
+
+
+<ol>
+<li><p>一个简单的游戏 <br/>
+a.假如有3个杯子，其中有一个杯子的下面有钻石，现在让你选一个， 然后系统帮你去除一个没有钻石的杯子，现在问你要不要换另外一个杯子(也就是问剩下两个杯子下面有钻石的概率是不是一样的) <br/>
+b.换一种情况。假如有1000万张彩票(只有一张中奖)，先让你从1000玩里随便选一个，然后系统帮你去除其中9999998张没中奖的，留下你选的一张和另外一张，问你要不要换成剩下的另一张(同样是问剩下两张彩票的中奖概率是不是一样的)</p></li>
+<li><p>你对iOS哪一块最了解？然后针对那一点各种问。我说我对下载模块比较熟悉，然后他就各种问。例如通过NSURLCOnnection下载的数据与UI交互的优化、断点下载的实现原理等</p></li>
+<li><p>LRUCache算法.比如你有10M的内存，怎么去处理20M的文件</p></li>
+<li><p>你对MVC的理解，你如何你构架一个项目</p></li>
+<li><p>短信功能中，scrollview下移量和手势下移量不成比例，求这两个下移量的关系算法</p></li>
+</ol>
+
+
+<h3>总结</h3>
+
+<p>其实腾讯的面试，更多是引导型的面试。即使你iOS全部会，你说你的算法很厉害(那面试官可能更侧重的去问你算法)，只要你有一点能够打动面试官，那么得到offer的可能性也就更大了。</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>在Octopress上搭建一个github博客</title>
+      <link href="/2014/05/24/create-octopress-blog/"/>
+      <pubDate>2014-05-24T00:06:41+08:00</pubDate>
+      <author>iCode</author>
+      <guid>/2014/05/24/create-octopress-blog</guid>
+      <content:encoded><![CDATA[<h2>安装</h2>
+
+<hr />
+
+<ol>
+<li>首先我们得先配置ruby、git环境，这里就不讲了。</li>
+<li>先cd到一个好的目录，比如Desktop,然后开始下载Octopress<br/>
+<code>$ git clone https://github.com/imathis/octopress.git</code><br/>
+<code>$ cd octopress</code></li>
+<li>安装一些东西<br/>
+<code>$ gem install bundler</code><br/>
+<code>$ rbenv rehash</code><br/>
+<code>$ bundle install</code></li>
+</ol>
+
+
+<p>这样就装好Octopress了，我们可以<code>rake preview</code>在本地查看，如果<code>rake preview</code>报错的话，如下，</p>
+
+<blockquote><p>You have already activated rake 10.1.1, but your Gemfile requires rake 0.9.2.2. Prepending <code>bundle exec</code> to your command may solve this.</p></blockquote>
+
+<p>可能是因为你的rake版本过高，这时候就需要你在<code>rake preview</code>的前面加上<code>bundle exec</code></p>
+
+<!--more-->
+
+
+<h2>发布</h2>
+
+<hr />
+
+<ol>
+<li>在github上创建一个名为<code>username.github.com</code>的repository</li>
+<li>在Octopress目录里设定资料<br/>
+<code>$ rake setup_github_pages</code></li>
+<li>生成HTML<br/>
+<code>$ rake generate</code></li>
+<li>发布<br/>
+<code>$rake deploy</code></li>
+</ol>
+
+
+<p><strong>这样等几分钟，你就可以在你的网页,例如<a href="http://lazyyang.github.com">http://lazyyang.github.com</a>上浏览你的博客了</strong></p>
+
+<h2>配置博客</h2>
+
+<hr />
+
+<p><strong>我们需要在github上另外创建一个source分支，这个分支专门用来博客相关属性、写博客以及主题等</strong></p>
+
+<h3>配置博客相关属性</h3>
+
+<ul>
+<li>配置博客，相关配置文件在_config.yml文件里
+<code>$ vi  _config.yml</code><br/>
+<img src="https://raw.githubusercontent.com/lazyyang/lazyyang.github.com/source/source/images/img/octopress_1.png" alt="" />
+<strong>其中url是必填项，为你的博客地址</strong></li>
+</ul>
+
+
+<h3>写博客</h3>
+
+<ul>
+<li>写博客<br/>
+<code>$ cd source</code><br/>
+<code>$ cd _posts</code><br/>
+<code>$ rake new_post["博客名字"]</code><br/>
+<strong>这样就创建了一个名为markdown的文件，然后在markdown里面写博客了</strong></li>
+<li>同步github<br/>
+<code>$ git add .</code><br/>
+<code>$ git commit -m "a new blog"</code><br/>
+<code>$ git pull orgin source</code> <br/>
+<code>$ git push origin source</code></li>
+<li>发布文章<br/>
+<code>$ rake generate</code><br/>
+<code>$ rake deploy</code><br/>
+<strong>这样文章就成功同步到blog上去了</strong></li>
+</ul>
+
+
+<h1>:##多台电脑管理博客</h1>
+
+<hr />
+
+<p><strong>目前github上已经部署了我们的博客了，现在需要在另外一台电脑上继续写博客，该怎么处理</strong> <br/>
+<strong>Octopress的git仓库(repository)有两个分支，分别是<code>master</code>和<code>source</code>。<code>master</code>存储的事博客网站本身,而<code>source</code>存储的是生成博客的源文件。<code>master</code>的内容放在根目录的<code>_deploy</code></strong></p>
+
+<ul>
+<li><p>将source分支clone到本地<br/>
+<code>$ git clone -b source git@github.com:username/username.github.com.git octopress</code></p></li>
+<li><p>然后将master的clone到octopress的_deploy文件夹内<br/>
+<code>$ cd octopress</code>    <br/>
+<code>$ git clone git@github.com:username/username.github.com.git  _deploy</code></p></li>
+<li><p>然后安装博客，即bundler和需要的rubygem   <br/>
+<code>$ gem install bundler</code> <br/>
+<code>$ rbenv rehash</code>  <br/>
+<code>$ bundle install</code>   <br/>
+<code>$ rake setup_github_pages</code></p></li>
+</ul>
+
+]]></content:encoded>
+    </item>
     
   </channel>
 </rss>

@@ -10,10 +10,10 @@ comments: no
 
 ###联系方式：        
 
-邮箱: [smile@itjoy.org](mailto:smile@itjoy.org)     
-微博: [蛋花_Smile](http://weibo.com/u/2663764813)	    
-Github: [蜗牛会飞](https://github.com/xlking)        
-Twitter: [会飞的蜗牛](https://twitter.com/smile_jxl)
+邮箱: [lazyyang@126.com](mailto:lazyyang@126.com)     
+微博: [_Lazyz](http://weibo.com/17875623)	    
+Github: [lazyyang](https://github.com/lazyyang)        
+Twitter: [XX]()
 
 ----
 
