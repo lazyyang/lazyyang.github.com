@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="author" content="lazyyang" />
-    <title>Categories | lazyyang</title>
+    <title>腾讯iOS面试题 | lazyyang</title>
     <link rel="shortcut icon" href="/favicon.ico">
     <link href="/feed/" rel="alternate" title="lazyyang" type="application/atom+xml" />
     <link rel="stylesheet" type="text/css" href="/media/css/highlight.css">
@@ -44,7 +44,7 @@
     <div id="container">
       <div id="main" role="main">
         <header>
-        <h1>Categories</h1>
+        <h1>腾讯iOS面试题</h1>
         </header>
         <nav>
         <span><a title="home page" class="" href="/">Home</a></span>
@@ -56,40 +56,48 @@
         </nav>
         <article class="content">
         <section class="post">
-<div id='tag_cloud'>
+<h1>腾讯</h1>
 
-</div>
+<hr />
 
+<p>昨天去面腾讯地图的iOS，下面是我总结的一些问题。</p>
 
-
-
-<ul class="listing">
-
-</ul>
-
-
+<ol>
+<li><p>假如沙盒路径下有一个文件，文件里面有1000万个学生成绩，怎么对这个学生的成绩进行排序让其效率更高(假设内存足够大，可以一次性载入1000万个学生)</p></li>
+<li><p>从1000万个数里以最快的效率选出其中最大的100个(假设内存足够大，可以一次性载入1000万个成绩)</p></li>
+</ol>
 
 
-<script src="/media/js/jquery.tagcloud.js" type="text/javascript" charset="utf-8"></script>
+<!--more-->
 
 
-<p></p>
+<ol>
+<li><p>一个简单的游戏 <br/>
+a.假如有3个杯子，其中有一个杯子的下面有钻石，现在让你选一个， 然后系统帮你去除一个没有钻石的杯子，现在问你要不要换另外一个杯子(也就是问剩下两个杯子下面有钻石的概率是不是一样的) <br/>
+b.换一种情况。假如有1000万张彩票(只有一张中奖)，先让你从1000玩里随便选一个，然后系统帮你去除其中9999998张没中奖的，留下你选的一张和另外一张，问你要不要换成剩下的另一张(同样是问剩下两张彩票的中奖概率是不是一样的)</p></li>
+<li><p>你对iOS哪一块最了解？然后针对那一点各种问。我说我对下载模块比较熟悉，然后他就各种问。例如通过NSURLCOnnection下载的数据与UI交互的优化、断点下载的实现原理等</p></li>
+<li><p>LRUCache算法.比如你有10M的内存，怎么去处理20M的文件</p></li>
+<li><p>你对MVC的理解，你如何你构架一个项目</p></li>
+<li><p>短信功能中，scrollview下移量和手势下移量不成比例，求这两个下移量的关系算法</p></li>
+</ol>
 
-<script language="javascript">
-$.fn.tagcloud.defaults = {
-    size: {start: 1, end: 1, unit: 'em'},
-      color: {start: '#f8e0e6', end: '#ff3333'}
-};
 
-$(function () {
-    $('#tag_cloud a').tagcloud();
-});
-</script>
+<h3>总结</h3>
 
+<p>其实腾讯的面试，更多是引导型的面试。即使你iOS全部会，你说你的算法很厉害(那面试官可能更侧重的去问你算法)，只要你有一点能够打动面试官，那么得到offer的可能性也就更大了。</p>
 
 </section>
-
-
+<section class="meta">
+<br/>
+<span>
+	<a  href="/2014/05/24/create-octopress-blog/" class="pageNav"  >Previous</a>
+	&nbsp;&nbsp;&nbsp;
+	<a  href="/2014/06/26/loadviewyu-viewdidloadde-qu-bie/" class="pageNav"  >Next</a>
+</span>
+</section>
+<hr>
+<div class="ds-thread" data-thread-key="/2014/06/25/teng-xun-iosmian-shi-ti"  data-title="腾讯iOS面试题 - "></div>
+<br/>
 
         </article>
       </div>

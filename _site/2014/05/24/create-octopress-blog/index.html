@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="lazyyang" />
+    <title>在Octopress上搭建一个github博客 | lazyyang</title>
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link href="/feed/" rel="alternate" title="lazyyang" type="application/atom+xml" />
+    <link rel="stylesheet" type="text/css" href="/media/css/highlight.css">
+    <link rel="stylesheet" href="/media/css/style.css">
+    <script type="text/javascript" src="/media/js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="/media/js/bdshare.js"></script>
+    <script type="text/javascript" src="/media/js/duoshuo.js"></script>
+    <link rel="stylesheet" href="/media/css/font-awesome.min.css"/>
+
+  </head>
+  <script type="text/javascript">
+    function setTimeSpan(){
+    	var date = new Date();
+    	timeSpan.innerText=date.format('yyyy-MM-dd hh:mm:ss');
+    }
+    
+    Date.prototype.format = function(format)
+		{
+    var o =
+    	{
+    	    "M+" : this.getMonth()+1, //month
+    	    "d+" : this.getDate(),    //day
+    	    "h+" : this.getHours(),   //hour
+    	    "m+" : this.getMinutes(), //minute
+    	    "s+" : this.getSeconds(), //second
+    	    "q+" : Math.floor((this.getMonth()+3)/3),  //quarter
+    	    "S" : this.getMilliseconds() //millisecond
+    	}
+    	if(/(y+)/.test(format))
+    	format=format.replace(RegExp.$1,(this.getFullYear()+"").substr(4 - RegExp.$1.length));
+    	for(var k in o)
+    	if(new RegExp("("+ k +")").test(format))
+    	format = format.replace(RegExp.$1,RegExp.$1.length==1 ? o[k] : ("00"+ o[k]).substr((""+ o[k]).length));
+    	return format;
+		}
+  </script>
+  <body onLoad="setInterval(setTimeSpan,1000);">
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+        <h1>在Octopress上搭建一个github博客</h1>
+        </header>
+        <nav>
+        <span><a title="home page" class="" href="/">Home</a></span>
+        <span><a title="album" class="" href="#">Album</a></span>
+        <span><a title="categories" class="" href="/categories/">Categories</a></span>
+        <span><a title="tags" class="" href="/tags/">Tags</a></span>
+        <span><a title="about" class="" href="/about/">About</a></span>
+        <span><a title="subscribe by RSS" class="" href="/feed/">Rss</a></span>
+        </nav>
+        <article class="content">
+        <section class="post">
+<h2>安装</h2>
+
+<hr />
+
+<ol>
+<li>首先我们得先配置ruby、git环境，这里就不讲了。</li>
+<li>先cd到一个好的目录，比如Desktop,然后开始下载Octopress<br/>
+<code>$ git clone https://github.com/imathis/octopress.git</code><br/>
+<code>$ cd octopress</code></li>
+<li>安装一些东西<br/>
+<code>$ gem install bundler</code><br/>
+<code>$ rbenv rehash</code><br/>
+<code>$ bundle install</code></li>
+</ol>
+
+
+<p>这样就装好Octopress了，我们可以<code>rake preview</code>在本地查看，如果<code>rake preview</code>报错的话，如下，</p>
+
+<blockquote><p>You have already activated rake 10.1.1, but your Gemfile requires rake 0.9.2.2. Prepending <code>bundle exec</code> to your command may solve this.</p></blockquote>
+
+<p>可能是因为你的rake版本过高，这时候就需要你在<code>rake preview</code>的前面加上<code>bundle exec</code></p>
+
+<!--more-->
+
+
+<h2>发布</h2>
+
+<hr />
+
+<ol>
+<li>在github上创建一个名为<code>username.github.com</code>的repository</li>
+<li>在Octopress目录里设定资料<br/>
+<code>$ rake setup_github_pages</code></li>
+<li>生成HTML<br/>
+<code>$ rake generate</code></li>
+<li>发布<br/>
+<code>$rake deploy</code></li>
+</ol>
+
+
+<p><strong>这样等几分钟，你就可以在你的网页,例如<a href="http://lazyyang.github.com">http://lazyyang.github.com</a>上浏览你的博客了</strong></p>
+
+<h2>配置博客</h2>
+
+<hr />
+
+<p><strong>我们需要在github上另外创建一个source分支，这个分支专门用来博客相关属性、写博客以及主题等</strong></p>
+
+<h3>配置博客相关属性</h3>
+
+<ul>
+<li>配置博客，相关配置文件在_config.yml文件里
+<code>$ vi  _config.yml</code><br/>
+<img src="https://raw.githubusercontent.com/lazyyang/lazyyang.github.com/source/source/images/img/octopress_1.png" alt="" />
+<strong>其中url是必填项，为你的博客地址</strong></li>
+</ul>
+
+
+<h3>写博客</h3>
+
+<ul>
+<li>写博客<br/>
+<code>$ cd source</code><br/>
+<code>$ cd _posts</code><br/>
+<code>$ rake new_post["博客名字"]</code><br/>
+<strong>这样就创建了一个名为markdown的文件，然后在markdown里面写博客了</strong></li>
+<li>同步github<br/>
+<code>$ git add .</code><br/>
+<code>$ git commit -m "a new blog"</code><br/>
+<code>$ git pull orgin source</code> <br/>
+<code>$ git push origin source</code></li>
+<li>发布文章<br/>
+<code>$ rake generate</code><br/>
+<code>$ rake deploy</code><br/>
+<strong>这样文章就成功同步到blog上去了</strong></li>
+</ul>
+
+
+<h1>:##多台电脑管理博客</h1>
+
+<hr />
+
+<p><strong>目前github上已经部署了我们的博客了，现在需要在另外一台电脑上继续写博客，该怎么处理</strong> <br/>
+<strong>Octopress的git仓库(repository)有两个分支，分别是<code>master</code>和<code>source</code>。<code>master</code>存储的事博客网站本身,而<code>source</code>存储的是生成博客的源文件。<code>master</code>的内容放在根目录的<code>_deploy</code></strong></p>
+
+<ul>
+<li><p>将source分支clone到本地<br/>
+<code>$ git clone -b source git@github.com:username/username.github.com.git octopress</code></p></li>
+<li><p>然后将master的clone到octopress的_deploy文件夹内<br/>
+<code>$ cd octopress</code>    <br/>
+<code>$ git clone git@github.com:username/username.github.com.git  _deploy</code></p></li>
+<li><p>然后安装博客，即bundler和需要的rubygem   <br/>
+<code>$ gem install bundler</code> <br/>
+<code>$ rbenv rehash</code>  <br/>
+<code>$ bundle install</code>   <br/>
+<code>$ rake setup_github_pages</code></p></li>
+</ul>
+
+
+</section>
+<section class="meta">
+<br/>
+<span>
+	<a   class="pageNavInvalid"  >Previous</a>
+	&nbsp;&nbsp;&nbsp;
+	<a  href="/2014/06/25/teng-xun-iosmian-shi-ti/" class="pageNav"  >Next</a>
+</span>
+</section>
+<hr>
+<div class="ds-thread" data-thread-key="/2014/05/24/create-octopress-blog"  data-title="在Octopress上搭建一个github博客 - "></div>
+<br/>
+
+        </article>
+      </div>
+
+    <footer>
+        <p id="footer"><small>Powered by <a href="https://github.com/mojombo/jekyll">Jekyll</a> & <a href="http://pages.github.com">GitHub</a> | Copyright 2012 - 2015 by <a href="/about/">lazyyang</a> | <span class="label label-info" id="timeSpan"></span></small></p>
+    </footer>
+
+    </div>
+  </body>
+</html>

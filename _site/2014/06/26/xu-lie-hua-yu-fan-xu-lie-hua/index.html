@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="author" content="lazyyang" />
-    <title>Categories | lazyyang</title>
+    <title>序列化与反序列化 | lazyyang</title>
     <link rel="shortcut icon" href="/favicon.ico">
     <link href="/feed/" rel="alternate" title="lazyyang" type="application/atom+xml" />
     <link rel="stylesheet" type="text/css" href="/media/css/highlight.css">
@@ -44,7 +44,7 @@
     <div id="container">
       <div id="main" role="main">
         <header>
-        <h1>Categories</h1>
+        <h1>序列化与反序列化</h1>
         </header>
         <nav>
         <span><a title="home page" class="" href="/">Home</a></span>
@@ -56,40 +56,67 @@
         </nav>
         <article class="content">
         <section class="post">
-<div id='tag_cloud'>
+<p>归档即序列化与反序列化</p>
 
-</div>
+<p>NSCoding是一个协议，主要是下面两个方法</p>
 
-
-
-
-<ul class="listing">
-
+<ul>
+<li><p>-(id)initWithCoder:(NSCoder *)coder;//从coder中读取数据，保存到相应的变量中，即反序列化数据</p></li>
+<li><p>-(void)encoderWithCoder:(NSCoder *)coder;//读取实例变量，并把这些数据写到coder中去。</p></li>
 </ul>
 
 
+<p><strong>NSCoder是一个抽象类，抽象类不能被实例化，只能提供一些想让子类继承的方法</strong> <br/>
+<strong>NSKeyedUnarchiver 从二进制流读取对象</strong> <br/>
+<strong>NSKeyedArchiver   把对象写到二进制流中去</strong></p>
 
+<p>如下，在ZYRestaurant定义了如下这些属性</p>
 
-<script src="/media/js/jquery.tagcloud.js" type="text/javascript" charset="utf-8"></script>
+<pre><code>
+@interface ZYRestaurant : NSObject&lt;NSCoding&gt;
 
+@property (nonatomic,copy) NSString *shopID;
+@property (nonatomic,copy) NSString *title;
+@property (nonatomic,copy) NSString *discount;
+@property (nonatomic,copy) NSString *address;
 
-<p></p>
+@end
+</code></pre>
 
-<script language="javascript">
-$.fn.tagcloud.defaults = {
-    size: {start: 1, end: 1, unit: 'em'},
-      color: {start: '#f8e0e6', end: '#ff3333'}
-};
+<p>在ZYRestaurant.m里面实现如下这些方法</p>
 
-$(function () {
-    $('#tag_cloud a').tagcloud();
-});
-</script>
+<pre><code>- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super init]) {
+        _shopID = [aDecoder decodeObjectForKey:@"shopid"];
+        _title = [aDecoder decodeObjectForKey:@"title"];
+        _discount = [aDecoder decodeObjectForKey:@"discount"];
+        _address = [aDecoder decodeObjectForKey:@"address"];
+    }
+    return self;
+}
 
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:self.shopID forKey:@"shopid"];
+    [aCoder encodeObject:self.title forKey:@"title"];
+    [aCoder encodeObject:self.discount forKey:@"discount"];
+    [aCoder encodeObject:self.address forKey:@"address"];
+}
+</code></pre>
 
 </section>
-
-
+<section class="meta">
+<br/>
+<span>
+	<a  href="/2014/06/26/loadviewyu-viewdidloadde-qu-bie/" class="pageNav"  >Previous</a>
+	&nbsp;&nbsp;&nbsp;
+	<a  href="/2015/01/11/tow/" class="pageNav"  >Next</a>
+</span>
+</section>
+<hr>
+<div class="ds-thread" data-thread-key="/2014/06/26/xu-lie-hua-yu-fan-xu-lie-hua"  data-title="序列化与反序列化 - "></div>
+<br/>
 
         </article>
       </div>

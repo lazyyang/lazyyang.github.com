@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="author" content="lazyyang" />
-    <title>Categories | lazyyang</title>
+    <title>loadView与viewDidLoad的区别 | lazyyang</title>
     <link rel="shortcut icon" href="/favicon.ico">
     <link href="/feed/" rel="alternate" title="lazyyang" type="application/atom+xml" />
     <link rel="stylesheet" type="text/css" href="/media/css/highlight.css">
@@ -44,7 +44,7 @@
     <div id="container">
       <div id="main" role="main">
         <header>
-        <h1>Categories</h1>
+        <h1>loadView与viewDidLoad的区别</h1>
         </header>
         <nav>
         <span><a title="home page" class="" href="/">Home</a></span>
@@ -56,40 +56,55 @@
         </nav>
         <article class="content">
         <section class="post">
-<div id='tag_cloud'>
+<p><strong>观察下面这个例子会出现什么结果</strong></p>
 
-</div>
-
-
-
-
-<ul class="listing">
-
-</ul>
-
-
-
-
-<script src="/media/js/jquery.tagcloud.js" type="text/javascript" charset="utf-8"></script>
+<div class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="lineno">1</span> <span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">loadView</span>
+<span class="lineno">2</span> <span class="p">{</span>
+<span class="lineno">3</span>   <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;who am i&quot;</span><span class="p">);</span>
+<span class="lineno">4</span> <span class="p">}</span>
+<span class="lineno">5</span> 
+<span class="lineno">6</span> <span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewDidLoad</span>
+<span class="lineno">7</span> <span class="p">{</span>
+<span class="lineno">8</span>     <span class="nb">self</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIColor</span> <span class="n">redColor</span><span class="p">];</span>
+<span class="lineno">9</span> <span class="p">}</span></code></pre></div>
 
 
-<p></p>
 
-<script language="javascript">
-$.fn.tagcloud.defaults = {
-    size: {start: 1, end: 1, unit: 'em'},
-      color: {start: '#f8e0e6', end: '#ff3333'}
-};
 
-$(function () {
-    $('#tag_cloud a').tagcloud();
-});
-</script>
+<!--more-->
 
+
+<p>分析：发现loadView和viewDidload会一直循环调用，原因何在</p>
+
+<p>我们发现只要self.view为nil，它就会调用一次loadview</p>
+
+<p>于是我们猜想_view的getter方法里是这样写的</p>
+
+<pre><code>if(_view == nil)
+{
+...
+   [self loadView];
+   [self viewDidLoad];
+...
+}
+</code></pre>
+
+<p>下面是一涨生命周期的图：</p>
+
+<p><img src="https://raw.githubusercontent.com/lazyyang/lazyyang.github.com/source/source/images/img/lifeCircle.jpg" alt="" /></p>
 
 </section>
-
-
+<section class="meta">
+<br/>
+<span>
+	<a  href="/2014/06/25/teng-xun-iosmian-shi-ti/" class="pageNav"  >Previous</a>
+	&nbsp;&nbsp;&nbsp;
+	<a  href="/2014/06/26/xu-lie-hua-yu-fan-xu-lie-hua/" class="pageNav"  >Next</a>
+</span>
+</section>
+<hr>
+<div class="ds-thread" data-thread-key="/2014/06/26/loadviewyu-viewdidloadde-qu-bie"  data-title="loadView与viewDidLoad的区别 - "></div>
+<br/>
 
         </article>
       </div>
