@@ -1,0 +1,48 @@
+<p>大多数人对于UIWindow都很熟悉，但又很不了解，这篇文章我们就谈谈UIWindow。UIWindow继承与UIView,我们创建的第一个视图控件就是UIWindow。</p>
+
+<p><strong>KeyWindow</strong></p>
+
+<p>一个APP可以拥有很多UIWindow，但是同一时间同一时刻，永远只能有一个KeyWindow,keyWindow是指定的用来接收键盘和其它非触摸事件。UIWindow创建出来默认是隐藏的，我们可以通过makeKeyAndVisible让其成为KeyWindow，该属性同时也将其hidden属性设置为NO。也可以分别设置，例如   </p>
+
+<div class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="lineno">1</span> <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">window</span> <span class="n">makeKeyWindow</span><span class="p">];</span>
+<span class="lineno">2</span> <span class="nb">self</span><span class="p">.</span><span class="n">window</span><span class="p">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span></code></pre></div>
+
+<p><strong>如何创建一个UIWindow</strong></p>
+
+<p>先看看下面这段代码    </p>
+
+<div class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="lineno">1</span> <span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">btnClicked:</span><span class="p">(</span><span class="bp">UIButton</span> <span class="o">*</span><span class="p">)</span><span class="nv">button</span>
+<span class="lineno">2</span> <span class="p">{</span>
+<span class="lineno">3</span>     <span class="bp">UIWindow</span> <span class="o">*</span><span class="n">window</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIWindow</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame</span><span class="p">:</span><span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">)];</span>
+<span class="lineno">4</span>     <span class="n">window</span><span class="p">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIColor</span> <span class="n">redColor</span><span class="p">];</span>
+<span class="lineno">5</span>     <span class="p">[</span><span class="n">window</span> <span class="n">makeKeyAndVisible</span><span class="p">];</span>
+<span class="lineno">6</span> <span class="p">}</span></code></pre></div>
+
+<p>分析：当我们点击UIButton，出发该事件。但是我们发现，UIWindow没有生成，这是为什么呢？原因就在window创建在栈里，会很快被释放。正确的写法应该是这样，创建一个UIWindow的属性，如下，   </p>
+
+<div class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="lineno">1</span> <span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">btnClicked:</span><span class="p">(</span><span class="bp">UIButton</span> <span class="o">*</span><span class="p">)</span><span class="nv">button</span>
+<span class="lineno">2</span> <span class="p">{</span>
+<span class="lineno">3</span>     <span class="n">_window</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIWindow</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame</span><span class="p">:</span><span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">)];</span>
+<span class="lineno">4</span>     <span class="nb">self</span><span class="p">.</span><span class="n">window</span><span class="p">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIColor</span> <span class="n">redColor</span><span class="p">];</span>
+<span class="lineno">5</span>     <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">window</span> <span class="n">makeKeyAndVisible</span><span class="p">];</span>
+<span class="lineno">6</span> <span class="p">}</span></code></pre></div>
+
+<p><strong>UIWindow的方向</strong></p>
+
+<div class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="lineno">1</span> <span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewWillLayoutSubviews</span>
+<span class="lineno">2</span> <span class="p">{</span>
+<span class="lineno">3</span>     <span class="bp">UIWindow</span> <span class="o">*</span><span class="n">window</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">keyWindow</span><span class="p">];</span>   
+<span class="lineno">4</span>     <span class="k">if</span> <span class="p">(</span><span class="n">UIInterfaceOrientationIsLandscape</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">interfaceOrientation</span><span class="p">)){</span>
+<span class="lineno">5</span>         <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;window of LandsCape:%@&quot;</span><span class="p">,</span><span class="n">NSStringFromCGRect</span><span class="p">(</span><span class="n">window</span><span class="p">.</span><span class="n">frame</span><span class="p">));</span>
+<span class="lineno">6</span>     <span class="p">}</span> <span class="k">else</span><span class="p">{</span>
+<span class="lineno">7</span>         <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;window of Portrait:%@&quot;</span><span class="p">,</span><span class="n">NSStringFromCGRect</span><span class="p">(</span><span class="n">window</span><span class="p">.</span><span class="n">frame</span><span class="p">));</span>
+<span class="lineno">8</span>     <span class="p">}</span>
+<span class="lineno">9</span> <span class="p">}</span></code></pre></div>
+
+<p>iOS7模拟器中：  <br />
+2015-01-15 17:52:52.120 UIWindowDemo[67037:613] window of Portrait:{{0, 0}, {320, 568}}     <br />
+2015-01-15 17:54:08.702 UIWindowDemo[67037:613] window of LandsCape:{{0, 0}, {320, 568}}  </p>
+
+<p>iOS8模拟器中： <br />
+2015-01-15 17:58:01.223 UIWindowDemo[67131:2455317] window of Portrait:{{0, 0}, {320, 568}}   <br />
+2015-01-15 17:58:24.281 UIWindowDemo[67131:2455317] window of LandsCape:{{0, 0}, {568, 320}}     </p>

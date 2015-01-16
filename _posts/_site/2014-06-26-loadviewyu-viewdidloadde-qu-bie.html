@@ -1,0 +1,33 @@
+<p><strong>观察下面这个例子会出现什么结果</strong>  </p>
+
+<div class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="lineno">1</span> <span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">loadView</span>
+<span class="lineno">2</span> <span class="p">{</span>
+<span class="lineno">3</span> 	<span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;who am i&quot;</span><span class="p">);</span>
+<span class="lineno">4</span> <span class="p">}</span>
+<span class="lineno">5</span> 
+<span class="lineno">6</span> <span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewDidLoad</span>
+<span class="lineno">7</span> <span class="p">{</span>
+<span class="lineno">8</span>     <span class="nb">self</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIColor</span> <span class="n">redColor</span><span class="p">];</span>
+<span class="lineno">9</span> <span class="p">}</span></code></pre></div>
+
+<!--more-->
+<p>分析：发现loadView和viewDidload会一直循环调用，原因何在   </p>
+
+<p>我们发现只要self.view为nil，它就会调用一次loadview    </p>
+
+<p>于是我们猜想_view的getter方法里是这样写的   </p>
+
+<p>```
+if(_view == nil)
+{
+…
+   [self loadView];
+   [self viewDidLoad];
+…
+}</p>
+
+<p>```</p>
+
+<p>下面是一涨生命周期的图：</p>
+
+<p><img src="https://raw.githubusercontent.com/lazyyang/lazyyang.github.com/source/source/images/img/lifeCircle.jpg" alt="" /></p>

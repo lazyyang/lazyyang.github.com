@@ -7,7 +7,7 @@
     <title>lazyyang</title>
     <link href="/feed/" rel="self" />
     <link href="http://webfrogs.github.com" />
-    <lastBuildDate>2015-01-15T18:35:06+08:00</lastBuildDate>
+    <lastBuildDate>2015-01-16T10:16:46+08:00</lastBuildDate>
     <webMaster>ccf.developer@gmail.com</webMaster>
     
     <item>
@@ -48,7 +48,8 @@
 <span class="lineno">6</span> <span class="p">}</span></code></pre></div>
 
 
-<p><strong>UIWindow的方向</strong></p>
+<p><strong>UIWindow的方向</strong>   <br/>
+让我们看下面一个简单的例子，</p>
 
 <div class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="lineno">1</span> <span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewWillLayoutSubviews</span>
 <span class="lineno">2</span> <span class="p">{</span>
@@ -61,13 +62,70 @@
 <span class="lineno">9</span> <span class="p">}</span></code></pre></div>
 
 
-<p>iOS7模拟器中：  <br/>
+<p>iOS7模拟器打印结果：  <br/>
 2015-01-15 17:52:52.120 UIWindowDemo[67037:613] window of Portrait:{{0, 0}, {320, 568}}     <br/>
 2015-01-15 17:54:08.702 UIWindowDemo[67037:613] window of LandsCape:{{0, 0}, {320, 568}}</p>
 
-<p>iOS8模拟器中： <br/>
+<p>iOS8模拟器中打印结果： <br/>
 2015-01-15 17:58:01.223 UIWindowDemo[67131:2455317] window of Portrait:{{0, 0}, {320, 568}}   <br/>
 2015-01-15 17:58:24.281 UIWindowDemo[67131:2455317] window of LandsCape:{{0, 0}, {568, 320}}</p>
+
+<p>分析：从中我们可以看出，在iOS7中，不管手机是横屏状态还是竖屏状态，UIWindow总是Portrait方向。而iOS8中，UIWindow的方向与设备方向保持一致。</p>
+
+<p><strong>KeyBoard Window</strong></p>
+
+<p>KeyBoard是一个window，在介绍keyBoard之前我们先看下面这个简单的例子：</p>
+
+<div class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="lineno"> 1</span> <span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">btnClicked:</span><span class="p">(</span><span class="bp">UIButton</span> <span class="o">*</span><span class="p">)</span><span class="nv">button</span>
+<span class="lineno"> 2</span> <span class="p">{</span>
+<span class="lineno"> 3</span>     <span class="bp">NSArray</span> <span class="o">*</span><span class="n">array</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">windows</span><span class="p">];</span>
+<span class="lineno"> 4</span>     <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;array two = %@&quot;</span><span class="p">,</span><span class="n">array</span><span class="p">);</span>
+<span class="lineno"> 5</span> <span class="p">}</span>
+<span class="lineno"> 6</span> 
+<span class="lineno"> 7</span> <span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewDidLoad</span> <span class="p">{</span>
+<span class="lineno"> 8</span>     <span class="p">[</span><span class="nb">super</span> <span class="n">viewDidLoad</span><span class="p">];</span>
+<span class="lineno"> 9</span>     <span class="bp">NSArray</span> <span class="o">*</span><span class="n">array</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">windows</span><span class="p">];</span>
+<span class="lineno">10</span>     <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;arrayOne = %@&quot;</span><span class="p">,</span><span class="n">array</span><span class="p">);</span>
+<span class="lineno">11</span>     <span class="bp">UIButton</span> <span class="o">*</span><span class="n">btnOne</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIButton</span> <span class="nl">buttonWithType</span><span class="p">:</span><span class="n">UIButtonTypeRoundedRect</span><span class="p">];</span>
+<span class="lineno">12</span>     <span class="n">btnOne</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+<span class="lineno">13</span>     <span class="p">[</span><span class="n">btnOne</span> <span class="nl">setTitle</span><span class="p">:</span><span class="s">@&quot;Clicked me&quot;</span> <span class="nl">forState</span><span class="p">:</span><span class="n">UIControlStateNormal</span><span class="p">];</span>
+<span class="lineno">14</span>     <span class="p">[</span><span class="n">btnOne</span> <span class="nl">addTarget</span><span class="p">:</span><span class="nb">self</span> <span class="nl">action</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">btnClicked</span><span class="p">:)</span> <span class="nl">forControlEvents</span><span class="p">:</span><span class="n">UIControlEventTouchUpInside</span><span class="p">];</span>
+<span class="lineno">15</span>     <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">view</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">btnOne</span><span class="p">];</span> 
+<span class="lineno">16</span>      <span class="bp">UITextField</span> <span class="o">*</span><span class="n">textField</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UITextField</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame</span><span class="p">:</span><span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">100</span><span class="p">)];</span>
+<span class="lineno">17</span>     <span class="n">textField</span><span class="p">.</span><span class="n">placeholder</span> <span class="o">=</span> <span class="s">@&quot;Please write here&quot;</span><span class="p">;</span>
+<span class="lineno">18</span>     <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">view</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">textField</span><span class="p">];</span>
+<span class="lineno">19</span> <span class="p">}</span></code></pre></div>
+
+
+<p>注意：再点击Button事件之前，我们最好触摸下UITextField，从而触发键盘时间。  <br/>
+点击Button事件之前打印：
+2015-01-16 09:45:38.827 UIWindowDemo[70940:2531924] arrayOne = (
+    "&lt;UIWindow: 0x7fc882d32a60; frame = (0 0; 375 667); gestureRecognizers = &lt;NSArray: 0x7fc882d332a0>; layer = &lt;UIWindowLayer: 0x7fc882d305a0>>"
+)</p>
+
+<p>点击Button事件之后打印：
+2015-01-16 09:47:07.851 UIWindowDemo[70940:2531924] array two = (
+    "&lt;UIWindow: 0x7fc882d32a60; frame = (0 0; 375 667); gestureRecognizers = &lt;NSArray: 0x7fc882d332a0>; layer = &lt;UIWindowLayer: 0x7fc882d305a0>>",
+    "&lt;UITextEffectsWindow: 0x7fc882c30d20; frame = (0 0; 375 667); opaque = NO; gestureRecognizers = &lt;NSArray: 0x7fc882c3ef60>; layer = &lt;UIWindowLayer: 0x7fc882c13a50>>"
+)</p>
+
+<p>分析：我们从中可以看出，当点击了Button事件后，画了一个UITextField。同时[[UIApplication sharedApplication] windows]中新添加了一个UITextEffectsWindow，而这个UITextEffectsWindow就是KeyBoard Window。如我们前面所说，在iOS7系统以及之前的系统中，UIWindow的坐标系永远是portrait方向，而iOS8中，UIWindow的坐标系与手机方向保持一致。那么键盘也是一个UIWindow，是不是也满足这个条件呢？下面我们观察下键盘的打印结果：</p>
+
+<p>iOS7中， <br/>
+Portrait方向：  <br/>
+2015-01-16 10:00:33.189 UIWindowDemo[71088:613] UITextEffectsWindow:&lt;UITextEffectsWindow: 0x7f9631460fa0; frame = (0 0; 320 568); opaque = NO; gestureRecognizers = &lt;NSArray: 0x7f96314618a0>; layer = &lt;UIWindowLayer: 0x7f9631437600>></p>
+
+<p>Landscape方向：  <br/>
+2015-01-16 10:01:02.592 UIWindowDemo[71088:613] UITextEffectsWindow:&lt;UITextEffectsWindow: 0x7f9631460fa0; frame = (0 0; 320 568); transform = [0, -1, 1, 0, -124, 124]; opaque = NO; gestureRecognizers = &lt;NSArray: 0x7f96314618a0>; layer = &lt;UIWindowLayer: 0x7f9631437600>></p>
+
+<p>iOS8中，   <br/>
+Portrait方向：  <br/>
+UITextEffectsWindow:&lt;UITextEffectsWindow: 0x7fe621f49410; frame = (0 0; 320 568); opaque = NO; gestureRecognizers = &lt;NSArray: 0x7fe621f1f490>; layer = &lt;UIWindowLayer: 0x7fe621f1bbe0>></p>
+
+<p>Landscape方向：
+2015-01-16 10:07:49.309 UIWindowDemo[71130:2542897] UITextEffectsWindow:&lt;UITextEffectsWindow: 0x7fe621f49410; frame = (0 0; 568 320); opaque = NO; gestureRecognizers = &lt;NSArray: 0x7fe621f1f490>; layer = &lt;UIWindowLayer: 0x7fe621f1bbe0>></p>
+
+<p>从上面的打印结果我们可以看出，在iOS7中，keyBorad Window的方向也永远是Portrait的，当KeyBoard旋转的时候，系统会给KeyBoard一个transform的旋转变换。</p>
 ]]></content:encoded>
     </item>
     
