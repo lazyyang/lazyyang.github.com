@@ -7,7 +7,7 @@
     <title>lazyyang</title>
     <link href="/feed/" rel="self" />
     <link href="http://webfrogs.github.com" />
-    <lastBuildDate>2015-01-16T10:16:46+08:00</lastBuildDate>
+    <lastBuildDate>2015-01-16T11:39:21+08:00</lastBuildDate>
     <webMaster>ccf.developer@gmail.com</webMaster>
     
     <item>
@@ -126,6 +126,28 @@ UITextEffectsWindow:&lt;UITextEffectsWindow: 0x7fe621f49410; frame = (0 0; 320 5
 2015-01-16 10:07:49.309 UIWindowDemo[71130:2542897] UITextEffectsWindow:&lt;UITextEffectsWindow: 0x7fe621f49410; frame = (0 0; 568 320); opaque = NO; gestureRecognizers = &lt;NSArray: 0x7fe621f1f490>; layer = &lt;UIWindowLayer: 0x7fe621f1bbe0>></p>
 
 <p>从上面的打印结果我们可以看出，在iOS7中，keyBorad Window的方向也永远是Portrait的，当KeyBoard旋转的时候，系统会给KeyBoard一个transform的旋转变换。</p>
+
+<p><strong>Status Bar</strong></p>
+
+<p>Status Bar也是一个window，但是windows数组本身是不包含statusbar window。statusbar window是UIStatusBarWindow类型，我们可以通过下面这个方式来获取这个window</p>
+
+<div class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="lineno">1</span> <span class="p">-</span> <span class="p">(</span><span class="bp">UIWindow</span> <span class="o">*</span><span class="p">)</span><span class="nf">statusWindow</span>
+<span class="lineno">2</span> <span class="p">{</span>
+<span class="lineno">3</span>     <span class="bp">NSString</span> <span class="o">*</span><span class="n">statusBarString</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&quot;_statusBarWindow&quot;</span><span class="p">];</span>
+<span class="lineno">4</span>     <span class="k">return</span> <span class="p">[[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="nl">valueForKey</span><span class="p">:</span><span class="n">statusBarString</span><span class="p">];</span>
+<span class="lineno">5</span> <span class="p">}</span></code></pre></div>
+
+
+<p>跟KeyBoard window类似，在iOS7中，statusbar frame同样不会改变。当你旋转设备的时候，系统会对statusbar进行transform旋转变换。但是注意，在iOS8 LandScape的情况下，status bar是被隐藏的.</p>
+
+<div class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="lineno">1</span> <span class="bp">CGRect</span> <span class="n">rect</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">].</span><span class="n">statusBarFrame</span><span class="p">;</span>  
+<span class="lineno">2</span> <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;statusBarFrame %@&quot;</span><span class="p">,</span> <span class="n">NSStringFromCGRect</span><span class="p">(</span><span class="n">rect</span><span class="p">));</span></code></pre></div>
+
+
+<p>我们可以看下面这个iOS8 Landscape的打印结果：
+2015-01-16 11:29:19.235 UIWindowDemo[71511:2578866] statusFrame={{0, 320}, {0, 0}}</p>
+
+<p>在iOS8 Landscape的情况下，Landscape的长和宽都为零,故默认是不显示出来的</p>
 ]]></content:encoded>
     </item>
     
